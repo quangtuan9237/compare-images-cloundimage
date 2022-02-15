@@ -1,22 +1,19 @@
-import { ImageCompareViewer } from './components/image-compare-viewer';
+import styled from 'styled-components';
 import GlobalStyles from './components/GlobalStyles';
-import { ImageQualityInput } from './components/image-quality-input';
+import { ImageCompare } from './components/image-compare';
+
+const Wrapper = styled.div`
+  padding: 30px;
+`;
 
 function App() {
-  const leftSrc = 'https://doc.cloudimg.io/sample.li/paris.jpg?force_format=jpg&ci_info=1';
-  const rightSrc = 'https://doc.cloudimg.io/sample.li/paris.jpg?q=10&ci_info=1';
+  const base = 'https://doc.cloudimg.io/sample.li/paris.jpg';
 
   return (
-    <>
-      <ImageQualityInput />
-      <ImageCompareViewer
-        leftSrc={leftSrc}
-        rightSrc={rightSrc}
-        width="50vw"
-        separatorColor="white"
-      />
+    <Wrapper>
+      <ImageCompare src={base} />
       <GlobalStyles />
-    </>
+    </Wrapper>
   );
 }
 
