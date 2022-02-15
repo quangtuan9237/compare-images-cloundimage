@@ -32,8 +32,15 @@ export const Input = styled.input`
   border-radius: 15px;
   width: 42px;
   height: 26px;
+
+  &:disabled + ${Label} {
+    background: #cccccc !important;
+    cursor: not-allowed;
+  }
+
   &:checked + ${Label} {
     background: #3297fd;
+
     &::after {
       content: '';
       display: block;
