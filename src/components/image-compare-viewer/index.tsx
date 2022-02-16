@@ -1,4 +1,5 @@
 import React from 'react';
+import { Spinner } from './styles';
 import {
   Wrapper,
   Figure,
@@ -10,7 +11,7 @@ import {
   X_VALUE_CSSKEY,
 } from './styles';
 
-type ImageCompareViewerProps = React.HTMLAttributes<HTMLDivElement> & {
+export type ImageCompareViewerProps = React.HTMLAttributes<HTMLDivElement> & {
   leftSrc: string;
   rightSrc: string;
   separatorColor?: string;
@@ -26,11 +27,16 @@ export function ImageCompareViewer({
   width,
   ...props
 }: ImageCompareViewerProps) {
+  const [loading, setLoading] = React.useState(true);
   const [mouseXPos, setMouseXPos] = React.useState(0);
   const figureRef = React.useRef<HTMLDivElement>(null);
 
   const slideValue = figureRef.current ? mouseXPos / figureRef.current.offsetWidth : 0;
   const slidePercentage = Math.round(slideValue * 10000) / 100;
+
+  React.useEffect(() => {
+    setLoading(true);
+  }, [leftSrc, rightSrc]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!figureRef.current) {
@@ -43,13 +49,18 @@ export function ImageCompareViewer({
     setMouseXPos(x);
   }
 
+  function handleLoaded() {
+    setLoading(false);
+  }
+
   return (
     <Wrapper {...props}>
       <Figure ref={figureRef} onMouseMove={handleMouseMove}>
         <ImgSizer src={leftSrc} style={{ height, width }} />
-        <Img src={rightSrc} />
+        <Img src={rightSrc} onLoad={handleLoaded} />
         <ClipPathImg
           src={leftSrc}
+          onLoad={handleLoaded}
           style={{
             [SLIDE_VALUE_CSSKEY]: slidePercentage + '%',
           }}
@@ -60,6 +71,8 @@ export function ImageCompareViewer({
             [X_VALUE_CSSKEY]: mouseXPos + 'px',
           }}
         />
+        {/* {<AppSpinner />} */}
+        {loading && <Spinner />}
       </Figure>
     </Wrapper>
   );

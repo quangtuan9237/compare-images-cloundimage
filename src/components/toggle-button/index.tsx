@@ -2,7 +2,7 @@ import React from 'react';
 import { simpleUniqueId } from '../../utils/simpleUniqueId';
 import { Wrapper, Input, Label } from './styles';
 
-type ToggleButtonProps = React.InputHTMLAttributes<HTMLInputElement>;
+export type ToggleButtonProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 export function ToggleButton(props: ToggleButtonProps) {
   const [id] = React.useState(() => simpleUniqueId('switch'));
