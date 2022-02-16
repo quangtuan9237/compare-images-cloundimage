@@ -1,5 +1,5 @@
 import React from 'react';
-import { Spinner } from './styles';
+import { Spinner } from '../spinner';
 import {
   Wrapper,
   Figure,

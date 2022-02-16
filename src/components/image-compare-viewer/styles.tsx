@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Spinner as AppSpiner } from '../spinner';
 
 // Work around: force this variable to type 'any' in order to avoid type error with React.CSSProperties.
 export const SLIDE_VALUE_CSSKEY: any = '--slide-value';
@@ -15,7 +14,7 @@ export const Wrapper = styled.div`
 // should not define border or padding here because it will make x pos incorrect
 // => define border and padding in wrapper instead
 export const Figure = styled.figure`
-  min-height: 300px;
+  min-height: 200px;
   position: relative;
   overflow: hidden;
 `;
@@ -45,10 +44,4 @@ export const VerticalLine = styled.div`
   height: 100%;
   border-right: 2px dashed ${(props) => props.color || 'white'};
   transform: translate(var(${X_VALUE_CSSKEY}), 0px);
-`;
-
-export const Spinner = styled(AppSpiner)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
 `;

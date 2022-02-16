@@ -27,9 +27,10 @@ export type ImageConfigValue = {
 export type ImageQualityInputProps = {
   onChange?: (data: ImageConfigValue) => void;
   value?: ImageConfigValue;
+  title?: string;
 };
 
-export function ImageQualityInput({ onChange, value }: ImageQualityInputProps) {
+export function ImageQualityInput({ onChange, value, title }: ImageQualityInputProps) {
   const [idSelect] = React.useState(() => simpleUniqueId('select'));
   const [idInput] = React.useState(() => simpleUniqueId('input'));
   const [format, setFormat] = React.useState(value?.format || IMAGE_FORMATS.jpeg);
@@ -45,6 +46,7 @@ export function ImageQualityInput({ onChange, value }: ImageQualityInputProps) {
 
   return (
     <Wrapper>
+      <h3>{title || ''}</h3>
       <InputWrapper>
         <label htmlFor={idSelect}>Format:</label>
         <select
