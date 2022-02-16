@@ -27,16 +27,22 @@ export function ImageCompareViewer({
   width,
   ...props
 }: ImageCompareViewerProps) {
-  const [loading, setLoading] = React.useState(true);
+  const [leftLoading, setLeftLoading] = React.useState(true);
+  const [rightLoading, setRightLoading] = React.useState(true);
   const [mouseXPos, setMouseXPos] = React.useState(0);
   const figureRef = React.useRef<HTMLDivElement>(null);
 
   const slideValue = figureRef.current ? mouseXPos / figureRef.current.offsetWidth : 0;
   const slidePercentage = Math.round(slideValue * 10000) / 100;
+  const loading = leftLoading || rightLoading;
 
   React.useEffect(() => {
-    setLoading(true);
-  }, [leftSrc, rightSrc]);
+    setLeftLoading(true);
+  }, [leftSrc]);
+
+  React.useEffect(() => {
+    setRightLoading(true);
+  }, [rightSrc]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     if (!figureRef.current) {
@@ -49,20 +55,28 @@ export function ImageCompareViewer({
     setMouseXPos(x);
   }
 
-  function handleLoaded() {
-    setLoading(false);
-  }
-
   return (
     <Wrapper {...props}>
       <Figure ref={figureRef} onMouseMove={handleMouseMove}>
         <ImgSizer src={leftSrc} style={{ height, width }} />
-        <Img src={rightSrc} onLoad={handleLoaded} />
+        <Img
+          src={rightSrc}
+          onLoad={() => setRightLoading(false)}
+          style={{
+            ...(loading && {
+              visibility: 'hidden',
+            }),
+          }}
+        />
         <ClipPathImg
           src={leftSrc}
-          onLoad={handleLoaded}
+          onLoad={() => setLeftLoading(false)}
+          hidden={!rightLoading && !leftLoading}
           style={{
             [SLIDE_VALUE_CSSKEY]: slidePercentage + '%',
+            ...(loading && {
+              visibility: 'hidden',
+            }),
           }}
         />
         <VerticalLine
@@ -71,7 +85,6 @@ export function ImageCompareViewer({
             [X_VALUE_CSSKEY]: mouseXPos + 'px',
           }}
         />
-        {/* {<AppSpinner />} */}
         {loading && <Spinner />}
       </Figure>
     </Wrapper>
